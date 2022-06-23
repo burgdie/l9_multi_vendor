@@ -29,8 +29,13 @@ Route::prefix('admin')->group(function(){
     // Admin Login Route without admin group
     Route::match(['get','post'],'login', [AdminController::class, 'login']);
 
-    //Admin Dashboard Route without admin group
-    Route::get('dashboard',[AdminController::class, 'dashboard']);
+    Route::group(['middleware'=>['admin']], function(){
+         //Admin Dashboard Route without admin group
+        Route::get('dashboard',[AdminController::class, 'dashboard']);
+
+    });
+
+
 
 });
 
