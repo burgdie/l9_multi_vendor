@@ -43,10 +43,30 @@
                 </div>
               @endif
                 {{--  end  Alert using boostrap 4.6 --}}
+                {{-- Validation errors  --}}
+              @if ($errors->any())
+                  {{-- <div class="alert alert-danger">
+                     <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                         @endforeach
+                     </ul>
+                   </div> --}}
+                   <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                @endif
+
               <form class="pt-3" action="{{ url('admin/login') }}" method="POST">
                 <div class="form-group">
                     @csrf
-                  <input type="email" name="email" id="email" class="form-control form-control-lg" id="exampleInputEmail1" placeholder="Email" required ="">
+                  <input type="emil" name="email" id="email" class="form-control form-control-lg" id="exampleInputEmail1" placeholder="Email" required="" >
                 </div>
                 <div class="form-group">
                   <input type="password" name="password" id="password" class="form-control form-control-lg" id="exampleInputPassword1" placeholder="Password" required="">
