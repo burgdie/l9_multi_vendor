@@ -33,6 +33,8 @@ Route::prefix('admin')->group(function(){
          //Admin Dashboard Route without admin group
         Route::get('dashboard',[AdminController::class, 'dashboard']);
 
+        //Admin Logout
+        Route::get('logout', [AdminController::class, 'logout']);
     });
 
 

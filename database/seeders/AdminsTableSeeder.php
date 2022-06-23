@@ -20,7 +20,7 @@ class AdminsTableSeeder extends Seeder
             'vendor_id'=> 0,
             'mobile'=>'+491721234567',
             'email'=> 'admin@gmail.com',
-            'password' => '$2a$12$K53Y2FoT9qr9pP6G0fICjOktM73n6wLUWnATY9QdJD93HKOZ3G3t.', //password
+            'password' => '$2a$12$CVeqSsQA9f16i738R7i2/OUaJS4mm7hr1QwYtDuqBLzbdKRT6g6uG', //123456
             'image'=> '',
             'status' => 1
             ]
