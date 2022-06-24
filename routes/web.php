@@ -33,6 +33,11 @@ Route::prefix('admin')->group(function(){
          //Admin Dashboard Route without admin group
         Route::get('dashboard',[AdminController::class, 'dashboard']);
 
+        // Update Admin Password
+        Route::match(['get', 'post'], 'update-admin-password', [AdminController::class, 'updateAdminPassword']);
+        // Update Admin Password
+        Route::match(['get', 'post'], 'update-admin-settings', [AdminController::class, 'updateAdminSettings']);
+
         //Admin Logout
         Route::get('logout', [AdminController::class, 'logout']);
     });
