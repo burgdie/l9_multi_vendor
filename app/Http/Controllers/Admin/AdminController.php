@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\Admin;
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-// use Illuminate\Support\Facades\Auth;
 use Auth;
 use Hash;
+use App\Models\Admin;
+// use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+use App\Http\Controllers\Controller;
+// use Illuminate\Contracts\Validation\Rule;
 
 class AdminController extends Controller
 {
@@ -40,6 +42,40 @@ class AdminController extends Controller
       //  echo "<pre>"; print_r(Auth::guard('admin')->user()); die;
        $adminDetails = Admin::where('email', Auth::guard('admin')->user()->email)->first()->toArray();
         return view('admin.settings.update_admin_password')->with(compact('adminDetails'));
+    }
+
+    public function updateAdminDetails(Request $request){
+      if($request->isMethod('post')) {
+        $data = $request->all();
+        // echo "<pre>"; print_r($data); die;
+        $rules = [
+          'admin_name'  => 'required|regex:/^[\pL\s\-]+$/u',
+          'admin_mobile' => [
+            'required',
+            'numeric',
+            Rule::phone()->detect()->country('DE'),
+          ],
+
+        ];
+
+        $customMessages = [
+          'admin_name.required' => 'Name is required',
+          'admin_name.regex' => 'Valid Name is required',
+          'admin_mobile.required' => 'Mobile Number is required',
+          'admin_mobile.numeric' => 'Valid Mobile Number is required'
+        ];
+        $this->validate($request, $rules, $customMessages);
+
+        //Update Admin Detials
+        Admin::where('id',Auth::guard('admin')->user()->id)->update([
+          'name' => $data['admin_name'],
+          'mobile'=> $data['admin_mobile'],
+        ]);
+        return redirect()->back()->with('success_message', 'Admin details updated successfully!');
+
+      }
+      return view('admin.settings.update_admin_details');
+
     }
 
     public function checkAdminPassword(Request $request) {
