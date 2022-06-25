@@ -5,6 +5,9 @@
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  {{-- For solving the problem X-CSRF-Token when making an ajax call  --}}
+  <meta name="csrf-token" content="{{ csrf_token() }}" />
+  {{-- End For solving the problem X-CSRF-Token when making an ajax call  --}}
   <title>Skydash Admin</title>
   <!-- plugins:css -->
 
@@ -59,6 +62,9 @@
   <script src=" {{ url('admin/js/dashboard.js ') }}"></script>
   <script src=" {{ url('admin/js/Chart.roundedBarCharts.js ') }}"></script>
   <!-- End custom js for this page-->
+  {{-- Add Custom Admin Js --}}
+  <script src=" {{ url('admin/js/custom.js') }}"></script>
+   {{-- End Custom Admin Js --}}
 </body>
 
 </html>
