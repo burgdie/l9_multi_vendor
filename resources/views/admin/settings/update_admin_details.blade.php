@@ -65,7 +65,7 @@
              {{-- End add  panel for  error messages --}}
 
             <form class="forms-sample" action="{{ url('admin/update-admin-details') }}" method="post"
-              name="updateAdminPasswordForm" id="updateAdminPasswordForm"
+              name="" id="" enctype="multipart/form-data"
              >
               @csrf
               <div class="form-group">
@@ -84,6 +84,14 @@
               <div class="form-group">
                 <label for="admin_mobile">Mobile</label>
                 <input type="text" class="form-control" name="admin_mobile" id="admin_mobile" placeholder="Enter the Mobile Number" value="{{  Auth::guard('admin')->user()->mobile }}"required="" maxlength="13">
+              </div>
+              <div class="form-group">
+                <label for="admin_image">Admin Photo</label>
+                <input type="file" class="form-control" name="admin_image" id="admin_image" required="">
+                @if(!empty(Auth::guard('admin')->user()->image))
+                  <a target="_blank" href="{{ url('admin/images/photos/'.Auth::guard('admin')->user()->image) }}">View Image </a>
+                  <input type="hidden" name="current_admin_image" value="{{ Auth::guard('admin')->user()->image }}">
+                @endif
               </div>
 
 

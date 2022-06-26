@@ -9,7 +9,9 @@ use App\Models\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
-// use Illuminate\Contracts\Validation\Rule;
+// use Intervention\Image\Facades\Image;
+
+use Image;
 
 class AdminController extends Controller
 {
@@ -17,6 +19,40 @@ class AdminController extends Controller
     public function dashboard() {
         return view('admin.dashboard');
     }
+
+    // public function updateAdminDetails(Request $request){
+    //   if($request->isMethod('post')) {
+    //     $data = $request->all();
+    //     echo "<pre>"; print_r($data); die;
+    //     $rules = [
+    //       'admin_name'  => 'required|regex:/^[\pL\s\-]+$/u',
+    //       'admin_mobile' => [
+    //         'required',
+    //         'numeric',
+    //         Rule::phone()->detect()->country('DE'),
+    //       ],
+
+    //     ];
+
+    //     $customMessages = [
+    //       'admin_name.required' => 'Name is required',
+    //       'admin_name.regex' => 'Valid Name is required',
+    //       'admin_mobile.required' => 'Mobile Number is required',
+    //       'admin_mobile.numeric' => 'Valid Mobile Number is required'
+    //     ];
+    //     $this->validate($request, $rules, $customMessages);
+
+    //     //Update Admin Detials
+    //     Admin::where('id',Auth::guard('admin')->user()->id)->update([
+    //       'name' => $data['admin_name'],
+    //       'mobile'=> $data['admin_mobile'],
+    //     ]);
+    //     return redirect()->back()->with('success_message', 'Admin details updated successfully!');
+
+    //   }
+    //   return view('admin.settings.update_admin_details');
+
+    // }
 
     public function updateAdminPassword(Request $request){
       if($request->isMethod('post')){
@@ -62,14 +98,33 @@ class AdminController extends Controller
           'admin_name.required' => 'Name is required',
           'admin_name.regex' => 'Valid Name is required',
           'admin_mobile.required' => 'Mobile Number is required',
-          'admin_mobile.numeric' => 'Valid Mobile Number is required'
+          'admin_mobile.numeric' => 'Valid Mobile Number is required',
         ];
+
         $this->validate($request, $rules, $customMessages);
+
+        //Upload Admin Photo
+        //echo "<pre>"; print_r($data); die;
+
+        if($request->hasFile('admin_image')){
+
+          $image_tmp = $request->file('admin_image');
+          if($image_tmp->isValid()){
+            //Get Image Extension
+           $extension = $image_tmp->getClientOriginalExtension();
+            //Get New Image Name
+            $imageName = rand(111,99999).'.'.$extension;
+            $imagePath = 'admin/images/photos/'.$imageName;
+            //Upload the image
+            Image::make($image_tmp)->save($imagePath);
+          }
+        }
 
         //Update Admin Detials
         Admin::where('id',Auth::guard('admin')->user()->id)->update([
           'name' => $data['admin_name'],
           'mobile'=> $data['admin_mobile'],
+          'image' => $imageName
         ]);
         return redirect()->back()->with('success_message', 'Admin details updated successfully!');
 
