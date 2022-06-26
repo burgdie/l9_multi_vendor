@@ -26,5 +26,17 @@ class AdminsTableSeeder extends Seeder
             ]
         ];
         Admin::insert($adminRecords);
+
+        $adminRecords = [
+            ['id'=>2, 'name'=>'Dieter','type'=>'vendor',
+            'vendor_id'=> 1,
+            'mobile'=>'+491727116663',
+            'email'=> 'burgdie@gmail.com',
+            'password' => '$2a$12$CVeqSsQA9f16i738R7i2/OUaJS4mm7hr1QwYtDuqBLzbdKRT6g6uG', //123456
+            'image'=> '',
+            'status' => 0
+            ]
+        ];
+        Admin::insert($adminRecords);
     }
 }
