@@ -106,8 +106,8 @@ class AdminController extends Controller
         //Upload Admin Photo
         //echo "<pre>"; print_r($data); die;
 
+        //Check if File name of image to be uploaded is empty
         if($request->hasFile('admin_image')){
-
           $image_tmp = $request->file('admin_image');
           if($image_tmp->isValid()){
             //Get Image Extension
@@ -118,6 +118,12 @@ class AdminController extends Controller
             //Upload the image
             Image::make($image_tmp)->save($imagePath);
           }
+        } else if(!empty($data['current_admin_image'])){
+            // if not empty get selected image
+            $imageName =$data['current_admin_image'];
+          }else {
+            //if empty provide empty string for image name
+            $imageName = " ";
         }
 
         //Update Admin Detials
