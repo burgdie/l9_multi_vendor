@@ -18,7 +18,7 @@ return new class extends Migration
             $table->integer('vendor_id');
             $table->string('account_holder_name');
             $table->string('bank_name');
-            $table->string('account-number');
+            $table->string('account_number');
             $table->string('bank_ifsc_code');
             $table->timestamps();
         });

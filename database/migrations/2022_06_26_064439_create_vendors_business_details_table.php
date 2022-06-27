@@ -26,7 +26,7 @@ return new class extends Migration
             $table->string('address_proof');
             $table->string('address_proof_image');
             $table->string('business_license_number');
-            $table->string('gst_numbr');
+            $table->string('gst_number');
             $table->string('pan_number');
             $table->timestamps();
         });
