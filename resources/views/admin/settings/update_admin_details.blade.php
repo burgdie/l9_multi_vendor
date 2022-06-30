@@ -90,7 +90,7 @@
                 <input type="file" class="form-control" name="admin_image" id="admin_image">
                 @if(!empty(Auth::guard('admin')->user()->image))
                   <a target="_blank" href="{{ url('admin/images/photos/'.Auth::guard('admin')->user()->image) }}">View Image </a>
-                  <input type="hidden" name="current_admin_image" value="{{ Auth::guard('admin')->user()->image }}">
+                  <input type="hidden" name="current_vendor_image" value="{{ Auth::guard('admin')->user()->image }}">
                 @endif
               </div>
 

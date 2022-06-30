@@ -4,14 +4,15 @@ namespace App\Http\Controllers\Admin;
 
 use Auth;
 use Hash;
-use App\Models\Admin;
+use Image;
 // use Illuminate\Support\Facades\Auth;
+use App\Models\Admin;
+use App\Models\Vendor;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
-use App\Http\Controllers\Controller;
 // use Intervention\Image\Facades\Image;
 
-use Image;
+use Illuminate\Validation\Rule;
+use App\Http\Controllers\Controller;
 
 class AdminController extends Controller
 {
@@ -45,40 +46,8 @@ class AdminController extends Controller
     //     //Update Admin Detials
     //     Admin::where('id',Auth::guard('admin')->user()->id)->update([
     //       'name' => $data['admin_name'],
-    //       'mobile'=> $data['admin_mobile'],
-    //     ]);
-    //     return redirect()->back()->with('success_message', 'Admin details updated successfully!');
 
-    //   }
-    //   return view('admin.settings.update_admin_details');
 
-    // }
-
-    public function updateAdminPassword(Request $request){
-      if($request->isMethod('post')){
-        $data = $request->all();
-        // echo "<pre>"; print_r($data); die;
-        //Back-end check if current password entered by admin is correct
-        if(Hash::check($data['current_password'],Auth::guard('admin')->user()->password)){
-          //Check if new password is matching with confirm password
-          if($data['confirm_password']== $data['new_password']){
-            Admin::where('id',Auth::guard('admin')->user()->id)->update(['password'=>bcrypt($data['new_password'])]);
-            return redirect()->back()->with('success_message','Password Update Successful');
-
-          }else{
-            return redirect()->back()->with('error_message','New Password and Confirm Password does not match');
-          }
-
-        }else {
-          return redirect()->back()->with('error_message', 'Your current password is Incorrect!' );
-        }
-
-      }
-
-      //  echo "<pre>"; print_r(Auth::guard('admin')->user()); die;
-       $adminDetails = Admin::where('email', Auth::guard('admin')->user()->email)->first()->toArray();
-        return view('admin.settings.update_admin_password')->with(compact('adminDetails'));
-    }
 
     public function updateAdminDetails(Request $request){
       if($request->isMethod('post')) {
@@ -139,14 +108,98 @@ class AdminController extends Controller
 
     }
 
-    public function checkAdminPassword(Request $request) {
-      $data = $request->all();
-      // echo "<pre>"; print_r($data); die;
-      if(Hash::check($data['current_password'], Auth::guard('admin')->user()->password)){
-        return "true";
-      }else {
-        return  "false";
+    public function updateVendorDetails($slug, Request $request) {
+      if($slug =="personal"){
+
+        if($request->isMethod('post')){
+          $data = $request->all();
+          //echo "<pre>"; print_r($data); die;
+
+          $rules = [
+            'vendor_name'  => 'required|regex:/^[\pL\s\-]+$/u',
+            'vendor_city' => 'required|regex:/^[\pL\s\-]+$/u',
+            'vendor_country' => 'required|regex:/^[\pL\s\-]+$/u',
+            'vendor_address' => 'required',
+
+            'vendor_mobile' => [
+              'required',
+              'numeric',
+              Rule::phone()->detect()->country('DE',''),
+            ],
+
+          ];
+
+          $customMessages = [
+            'vendor_name.required' => 'Name is required',
+            'vendor_name.regex' => 'Valid Name is required',
+            'vendor_city.required' => 'City name is required',
+            'vendor_city.regex' => 'Valid City name is required',
+            'vendor_country.required' => 'Country name is required',
+            'vendor_country.regex' => 'Valid Country name is required',
+            'vendor_address.required' => 'Address is required',
+            'vendor_mobile.required' => 'Mobile Number is required',
+            'vendor_mobile.numeric' => 'Valid Mobile Number is required',
+          ];
+
+          $this->validate($request, $rules, $customMessages);
+
+          //Upload Admin Photo
+          //echo "<pre>"; print_r($data); die;
+
+          //Check if File name of image to be uploaded is empty
+          if($request->hasFile('vendor_image')){
+            $image_tmp = $request->file('vendor_image');
+            if($image_tmp->isValid()){
+              //Get Image Extension
+             $extension = $image_tmp->getClientOriginalExtension();
+              //Get New Image Name
+              $imageName = rand(111,99999).'.'.$extension;
+              $imagePath = 'admin/images/photos/'.$imageName;
+              //Upload the image
+              Image::make($image_tmp)->save($imagePath);
+            }
+          } else if(!empty($data['current_vendor_image'])){
+              // if not empty get selected image
+              $imageName =$data['current_vendor_image'];
+            }else {
+              //if empty provide empty string for image name
+              $imageName = " ";
+          }
+
+          //Update in admins table
+          $user_id=Auth::guard('admin')->user()->id;
+          // echo "<pre>"; print_r( $user_id); die;
+          Admin::where('id',$user_id)->update([
+            'name' => $data['vendor_name'],
+            'mobile'=> $data['vendor_mobile'],
+            'image' => $imageName
+          ]);
+
+          //Update in vendors table
+          //echo "<pre>"; print_r($data); die;
+          Vendor::where('id',Auth::guard('admin')->user()->vendor_id)->update([
+            'name' => $data['vendor_name'],
+            'mobile'=> $data['vendor_mobile'],
+            'address'=> $data['vendor_address'],
+            'city'=> $data['vendor_city'],
+            'state'=> $data['vendor_state'],
+            'country'=> $data['vendor_country'],
+            'pincode'=> $data['vendor_pincode']
+          ]);
+
+          return redirect()->back()->with('success_message', 'Vendor details updated successfully!');
+        }
+        $vendorDetails = Vendor::where('id',Auth::guard('admin')->user()->vendor_id)->first()->toArray();
+
+      }else if($slug=="business"){
+
+      }else if ($slug=="bank"){
+
+
       }
+      return view('admin.settings.update_vendor_details')->with(compact('slug', 'vendorDetails'));
+
+
     }
 
     public function login(Request $request){
