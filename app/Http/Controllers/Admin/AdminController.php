@@ -340,6 +340,21 @@ class AdminController extends Controller
         return view('admin.login');
     }
 
+    public function admins($type=null) {
+      $admins = Admin::query();
+      if(!empty($type)){
+        $admins = $admins->where('type', $type);
+        $title = ucfirst($type).'s';
+
+      }else{
+        $title = "Admins/Subadmins/Vendors";
+
+      }
+      $admins = $admins->get()->toArray();
+      // dd($admins);
+      return view('admin.admins.admins')->with(compact('admins','title'));
+    }
+
     public function logout(){
        Auth::guard('admin')->logout();
        return redirect('admin/login');

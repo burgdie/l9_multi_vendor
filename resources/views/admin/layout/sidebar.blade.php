@@ -7,6 +7,7 @@
         </a>
       </li>
       @if(Auth::guard('admin')->user()->type=="vendor")
+      {{-- *************** Start Mange Vendor Details (visible for Vendors) --}}
         <li class="nav-item">
           <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
             <i class="icon-layout menu-icon"></i>
@@ -22,7 +23,10 @@
             </ul>
           </div>
         </li>
+         {{-- *************** End Mange Vendor Details (visible for Vendors) --}}
       @else
+
+      {{-- **********  Start Manage Admin Settings (visible for Admins)--}}
         <li class="nav-item">
           <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
             <i class="icon-layout menu-icon"></i>
@@ -33,10 +37,46 @@
             <ul class="nav flex-column sub-menu">
               <li class="nav-item"> <a class="nav-link" href="{{ url('admin/update-admin-password') }}">Update Password</a></li>
               <li class="nav-item"> <a class="nav-link" href="{{ url('admin/update-admin-details') }}">Update Details</a></li>
-
             </ul>
           </div>
         </li>
+        {{-- ********** End  Manage Settings (visible for Admins)--}}
+
+      {{-- *******  Start Admin Management to manage Admin, Subadmins, Vendors **** --}}
+      {{-- **** based  on columnn type in admins table  (visible for Admins) *******--}}
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
+            <i class="icon-layout menu-icon"></i>
+            <span class="menu-title">Manage Admins</span>
+            <i class="menu-arrow"></i>
+          </a>
+          <div class="collapse" id="ui-basic">
+            <ul class="nav flex-column sub-menu">
+              <li class="nav-item"> <a class="nav-link" href="{{ url('admin/admins/admin') }}">Admins</a></li>
+              <li class="nav-item"> <a class="nav-link" href="{{ url('admin/admins/subadmin') }}">Subadmins</a></li>
+              <li class="nav-item"> <a class="nav-link" href="{{ url('admin/admins/vendor') }}">Vendors</a></a></li>
+              <li class="nav-item"> <a class="nav-link" href="{{ url('admin/admins/') }}">All</a></a></li>
+            </ul>
+          </div>
+        </li>
+        {{-- **************** End  Admin Management              ******************--}}
+
+        {{-- **********  Start User Managment to mange Users and subscribers *******--}}
+        {{-- **********          visible for Admins                   **************--}}
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
+            <i class="icon-layout menu-icon"></i>
+            <span class="menu-title">Manage Users</span>
+            <i class="menu-arrow"></i>
+          </a>
+          <div class="collapse" id="ui-basic">
+            <ul class="nav flex-column sub-menu">
+              <li class="nav-item"> <a class="nav-link" href="{{ url('admin/users') }}">Users</a></li>
+              <li class="nav-item"> <a class="nav-link" href="{{ url('admin/subscribers') }}">Subscribers</a></li>
+            </ul>
+          </div>
+        </li>
+        {{-- **********  End User Managment --}}
       @endif
       <li class="nav-item">
         <a class="nav-link" data-toggle="collapse" href="#form-elements" aria-expanded="false" aria-controls="form-elements">
