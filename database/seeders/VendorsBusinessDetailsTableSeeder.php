@@ -22,6 +22,7 @@ class VendorsBusinessDetailsTableSeeder extends Seeder
             'shop_name'=> 'John Electronics',
             'shop_address' => 'Lessingstr. 19',
             'shop_city' => 'Affalterbach',
+            'shop_state' => 'Baden Württemberg',
             'shop_country'=>'Deutschland',
             'shop_pincode' => '11001',
             'shop_mobile' => '+491727116663',
