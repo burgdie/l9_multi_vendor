@@ -64,13 +64,17 @@
                       </td>
                       <td>
                          @if($admin['status'])
-                          Active
+                          <i style="font-size:30px;" class="mdi mdi-bookmark-check"></i>
                          @else
-                          Inactive
+                         <i style="font-size:30px;" class="mdi mdi-bookmark-outline"></i>
                          @endif
                       </td>
                       <td>
-
+                        @if($admin['type']=="vendor")
+                        <a href="{{ url('admin/view-vendor-details/'.$admin['id']) }}">
+                          <i style="font-size:30px;" class="mdi mdi-file-document"></i>
+                        </a>
+                        @endif
                       </td>
                     </tr>
                   @endforeach

@@ -48,6 +48,9 @@ Route::prefix('admin')->group(function(){
         // View Admins /Subadmins /Vendors
         Route::get('admins/{type?}',[AdminController::class, 'admins']);
 
+        //View Vendor details
+        Route::get('view-vendor-details/{id}',[AdminController::class, 'viewVendorDetails']);
+
         //Admin Logout
         Route::get('logout', [AdminController::class, 'logout']);
     });

@@ -27,6 +27,7 @@ class VendorsBusinessDetailsTableSeeder extends Seeder
             'shop_pincode' => '11001',
             'shop_mobile' => '+491727116663',
             'shop_website'=>'https://regiomahl.de',
+            'shop_email' => 'regiomahl@info.de',
             'address_proof'=> 'Passport',
             'address_proof_image' => 'logo.png',
             'business_license_number'=> '132435355',

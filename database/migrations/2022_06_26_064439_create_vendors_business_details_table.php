@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('shop_pincode');
             $table->string('shop_mobile');
             $table->string('shop_website');
+            $table->string('shop_email');
             $table->string('address_proof');
             $table->string('address_proof_image');
             $table->string('business_license_number');
